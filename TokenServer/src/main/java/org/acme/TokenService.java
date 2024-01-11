@@ -2,6 +2,10 @@ package org.acme;
 
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import models.ResponseMessage;
 import org.jboss.resteasy.core.interception.jaxrs.ResponseContainerRequestContext;
@@ -18,19 +22,37 @@ public class TokenService {
 
     private HashMap<String, String[]> tokenMap;
 
+    //holds all tokens from customer (customerId, tokens)
+    //customerId1:[token1,token2,token3]
     public TokenService() {
         tokenMap = new HashMap<>();
+
     }
 
     @POST
     public String[] generateToken(String customerId) {
-        String[] tokens = new String[6];
-        for (int i = 0; i < 6; i++) {
-            tokens[i] = newToken();
+        //gets all tokens given a customer
+        String[] tokensCustomerId = tokenMap.get(customerId);
+        if(tokensCustomerId == null)
+        {
+            String[] tokens = new String[6];
+            for (int i = 0; i < 6; i++) {
+                tokens[i] = newToken();
+            }
+            tokenMap.put(customerId, tokens);
+            return tokens;
         }
-        tokenMap.put(customerId, tokens);
-        return tokens;
-
+        //number of tokens per customer
+        int numberOfTokens = tokensCustomerId.length;
+        if(numberOfTokens < 2) {
+            String[] tokens = new String[4];
+            for (int i = 0; i < 4; i++) {
+                tokens[i] = newToken();
+            }
+            tokenMap.put(customerId, tokens);
+            return tokens;
+        }
+        else return null;
     }
 
     @POST
@@ -65,5 +87,7 @@ public class TokenService {
         randomToken = randomToken.substring(0, 10);
         return randomToken;
     }
+
+
 
 }
