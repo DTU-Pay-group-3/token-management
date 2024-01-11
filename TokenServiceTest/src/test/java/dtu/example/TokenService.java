@@ -21,11 +21,19 @@ public class TokenService {
         baseUrl = client.target("http://localhost:8080/");
     }
 
-    public ResponseMessage generateToken(String cid)
+    public String[] generateToken(String cid)
     {
         Response response = baseUrl.path("token")
                 .request()
                 .post(Entity.entity(cid, MediaType.APPLICATION_JSON));
+        return response.readEntity(String[].class);
+    }
+
+    public ResponseMessage validateToken(String token)
+    {
+        Response response = baseUrl.path("token/use")
+                .request()
+                .post(Entity.entity(token, MediaType.APPLICATION_JSON));
         return response.readEntity(ResponseMessage.class);
     }
 
