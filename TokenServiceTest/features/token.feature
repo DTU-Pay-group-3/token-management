@@ -15,3 +15,7 @@ Feature: Token generation
     Then the token service
     And the token is no longer usable
 
+Scenario: Approval of token generation
+  Given a customer with id "cid1" and the list of tokens with length 2
+  When the customer asks for tokens
+  Then the customer receives list of 4 tokens
