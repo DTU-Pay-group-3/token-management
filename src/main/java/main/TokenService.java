@@ -1,4 +1,5 @@
 package main;
+
 import messaging.Event;
 import messaging.MessageQueue;
 
@@ -24,7 +25,7 @@ public class TokenService {
 
     }
 
-    public String[] getAllTokens(String customerid){
+    public String[] getAllTokens(String customerid) {
         return tokenMap.get(customerid);
     }
 
@@ -36,20 +37,17 @@ public class TokenService {
         var correlationId = ev.getArgument(1, CorrelationId.class);
         //gets all tokens given a customer
         String[] tokensCustomerId = tokenMap.get(customerId);
-        if(tokensCustomerId == null)
-        {
+        if (tokensCustomerId == null) {
             String[] tokens = new String[6];
             for (int i = 0; i < 6; i++) {
                 tokens[i] = newToken();
             }
             tokenMap.put(customerId, tokens);
-            Event event = new Event("GenerateTokenCompleted", new Object[]{tokens,correlationId});
+            Event event = new Event("GenerateTokenCompleted", new Object[]{tokens, correlationId});
             System.out.println("Publishing GenerateTokenCompleted event");
             queue.publish(event);
 
-        }else {
-
-
+        } else {
             //number of tokens per customer
             int numberOfTokens = tokensCustomerId.length;
             if (numberOfTokens < 2) {
@@ -58,18 +56,18 @@ public class TokenService {
                     tokens[i] = newToken();
                 }
                 tokenMap.put(customerId, tokens);
-                Event event = new Event("GenerateTokenCompleted", new Object[]{tokens,correlationId});
+                Event event = new Event("GenerateTokenCompleted", new Object[]{tokens, correlationId});
                 System.out.println("Publishing GenerateTokenCompleted event");
                 queue.publish(event);
 
             } else {
-                Event event = new Event("GenerateTokenFailed", new Object[]{"FailMessage",correlationId});
+                Event event = new Event("GenerateTokenFailed", new Object[]{"FailMessage", correlationId});
                 System.out.println("Publishing GenerateTokenFailed event");
                 queue.publish(event);
+
             }
         }
     }
-
 
 
     public void FindToken(Event ev) {
@@ -78,11 +76,10 @@ public class TokenService {
         String token = ev.getArgument(0, String.class);
         var correlationId = ev.getArgument(1, CorrelationId.class);
 
-
         for (String customerID : tokenMap.keySet()) {
             String[] tokens = tokenMap.get(customerID);
-            if(tokens==null){
-                Event event = new Event("ValidateTokenFailed", new Object[]{"Fail",correlationId});
+            if (tokens == null) {
+                Event event = new Event("ValidateTokenFailed", new Object[]{"Fail", correlationId});
                 System.out.println("Publishing ValidateTokenFailed event");
                 queue.publish(event);
                 return;
@@ -97,14 +94,14 @@ public class TokenService {
                         }
                     }
                     tokenMap.put(customerID, updatedTokens);
-                    Event event = new Event("ValidateTokenCompleted", new Object[]{updatedTokens,correlationId});
+                    Event event = new Event("ValidateTokenCompleted", new Object[]{updatedTokens, correlationId});
                     System.out.println("Publishing ValidateTokenCompleted event");
                     System.out.println(String.join(",", updatedTokens));
                     queue.publish(event);
                     return;
                 }
             }
-            Event event = new Event("ValidateTokenFailed", new Object[]{"Fail",correlationId});
+            Event event = new Event("ValidateTokenFailed", new Object[]{"Fail", correlationId});
             System.out.println("Publishing ValidateTokenFailed event");
             queue.publish(event);
         }
@@ -119,6 +116,5 @@ public class TokenService {
         randomToken = randomToken.substring(0, 10);
         return randomToken;
     }
-
 
 }

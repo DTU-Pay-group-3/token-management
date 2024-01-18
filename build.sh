@@ -1,6 +1,4 @@
 #!/bin/bash
 set -e
-
-pushd TokenService
-./build.sh
-popd
+mvn clean package
+docker-compose build token-service
