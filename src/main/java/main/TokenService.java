@@ -5,7 +5,7 @@ import messaging.MessageQueue;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.HashMap;
-
+/*Author Marian s233481 and Sandra s233484*/
 public class TokenService {
 
     MessageQueue queue;

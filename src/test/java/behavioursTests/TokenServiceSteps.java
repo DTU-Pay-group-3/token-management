@@ -1,6 +1,5 @@
 package behavioursTests;
 
-import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -10,13 +9,11 @@ import main.TokenService;
 import messaging.Event;
 import messaging.MessageQueue;
 
-import java.util.HashMap;
-import java.util.concurrent.CompletableFuture;
-
 import static junit.framework.TestCase.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+/*Author Marian s233481 and Sandra s233484*/
 public class TokenServiceSteps {
 
     private MessageQueue q = mock(MessageQueue.class);
@@ -67,29 +64,29 @@ public class TokenServiceSteps {
     @When("The token is found and removed for the specific customer")
     public void theTokenIsFoundAndRemovedForTheSpecificCustomer() {
         tokenArr3 = new String[]{tokenArr3[1], tokenArr3[2], tokenArr3[3], tokenArr3[4], tokenArr3[5]};
-        tokenArr1=service.getAllTokens(user);
+        tokenArr1 = service.getAllTokens(user);
     }
 
     @Then("The validation success event is pushed")
     public void theValidationSuccessEventIsPushed() {
         var event = new Event("ValidateTokenCompleted", new Object[]{tokenArr1, correlationId});
         verify(q).publish(event);
-       assertEquals(String.join(",", tokenArr1),String.join(",", tokenArr3));
+        assertEquals(String.join(",", tokenArr1), String.join(",", tokenArr3));
     }
 
     @And("the customer has only {int} tokens left")
     public void theCustomerHasOnlyTokensLeft(int arg0) {
         tokenArr3 = service.getAllTokens(user);
         tokenArr1 = service.getAllTokens(user);
-        int x = tokenArr3.length-arg0;
-        for(int i = 0; i<x; i++) {
+        int x = tokenArr3.length - arg0;
+        for (int i = 0; i < x; i++) {
             var newID = CorrelationId.randomId();
             service.FindToken(new Event("ValidateToken", new Object[]{tokenArr1[0], newID}));
             tokenArr1 = service.getAllTokens(user);
         }
 
         tokenArr3 = new String[]{tokenArr3[5]};
-        assertEquals(String.join(",", tokenArr1),String.join(",", tokenArr3));
+        assertEquals(String.join(",", tokenArr1), String.join(",", tokenArr3));
 
     }
 
