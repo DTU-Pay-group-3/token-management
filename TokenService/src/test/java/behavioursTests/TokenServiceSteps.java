@@ -88,9 +88,7 @@ public class TokenServiceSteps {
             tokenArr1 = service.getAllTokens(user);
         }
 
-        tokenArr3 = new String[]{tokenArr3[4],tokenArr3[5]};
-        System.out.println(String.join(",", tokenArr1));
-        System.out.println(String.join(",", tokenArr3));
+        tokenArr3 = new String[]{tokenArr3[5]};
         assertEquals(String.join(",", tokenArr1),String.join(",", tokenArr3));
 
     }

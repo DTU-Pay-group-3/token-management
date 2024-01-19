@@ -46,10 +46,7 @@ public class TokenService {
             Event event = new Event("GenerateTokenCompleted", new Object[]{tokens,correlationId});
             System.out.println("Publishing GenerateTokenCompleted event");
             queue.publish(event);
-
         }else {
-
-
             //number of tokens per customer
             int numberOfTokens = tokensCustomerId.length;
             if (numberOfTokens < 2) {
@@ -61,7 +58,6 @@ public class TokenService {
                 Event event = new Event("GenerateTokenCompleted", new Object[]{tokens,correlationId});
                 System.out.println("Publishing GenerateTokenCompleted event");
                 queue.publish(event);
-
             } else {
                 Event event = new Event("GenerateTokenFailed", new Object[]{"FailMessage",correlationId});
                 System.out.println("Publishing GenerateTokenFailed event");
@@ -99,7 +95,6 @@ public class TokenService {
                     tokenMap.put(customerID, updatedTokens);
                     Event event = new Event("ValidateTokenCompleted", new Object[]{updatedTokens,correlationId});
                     System.out.println("Publishing ValidateTokenCompleted event");
-                    System.out.println(String.join(",", updatedTokens));
                     queue.publish(event);
                     return;
                 }
