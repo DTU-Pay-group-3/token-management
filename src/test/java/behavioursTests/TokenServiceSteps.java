@@ -13,7 +13,8 @@ import static junit.framework.TestCase.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-/*Author Marian s233481 and Sandra s233484*/
+/*Author Marian s233481*/
+/*Author Sandra s233484*/
 public class TokenServiceSteps {
 
     private MessageQueue q = mock(MessageQueue.class);
@@ -25,12 +26,14 @@ public class TokenServiceSteps {
 
     String user;
 
+    /*Author for scenario steps Marian s233481*/
     @Given("A {string} event is published for customer with id {string}")
     public void aEventIsPublishedForCustomerWithId(String event, String customer) {
         user = customer;
         correlationId = CorrelationId.randomId();
         service.generateToken(new Event(event, new Object[]{customer, correlationId}));
     }
+
 
     @When("The customer has null tokens")
     public void theCustomerHasNullTokens() {
@@ -46,6 +49,7 @@ public class TokenServiceSteps {
     }
 
 
+    /*Author for scenario steps Sandra s233484*/
     @Given("A {string} event for the customer with id {string}")
     public void aEventForTheCustomerWithId(String arg0, String customer) {
         user = customer;

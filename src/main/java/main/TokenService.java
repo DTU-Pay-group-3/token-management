@@ -29,6 +29,7 @@ public class TokenService {
     }
 
 
+    /*Author Sandra s233484*/
     public void generateToken(Event ev) {
         System.out.println("Event GenerateToken found");
         //Pass customer id during event creation
@@ -67,7 +68,7 @@ public class TokenService {
     }
 
 
-
+    /*Author Marian s233481*/
     public void FindToken(Event ev) {
         //Find token and remove it (validate)
         System.out.println("Event ValidateToken found");
@@ -106,6 +107,7 @@ public class TokenService {
 
     }
 
+    /*Author Sandra s233484*/
     private String newToken() {
         SecureRandom secureRandom = new SecureRandom();
         byte[] tokenBytes = new byte[10];
