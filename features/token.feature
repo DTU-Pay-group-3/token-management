@@ -4,7 +4,7 @@ Feature: Token
     When The customer has null tokens
     Then The token success event is pushed
 
-  Scenario: Tokens Generated Successfully
+  Scenario: Tokens Generated Successfully with 1 token left
     Given A "GenerateToken" event for the customer with id "cid1"
     And the customer has only 1 tokens left
     When A "GenerateToken" event is published for customer with id "cid1"
